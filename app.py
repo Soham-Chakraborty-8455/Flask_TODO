@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///todo.db"
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 db = SQLAlchemy(app)
 
 class Todo(db.Model):
@@ -15,12 +15,16 @@ class Todo(db.Model):
     def __repr__(self)->str:
         return f"{self.sNo}-{self.title}"
 
+with app.app_context():
+    db.create_all()
+    db.session.commit()
 
 @app.route('/')
 def hello_world():
     query1= Todo(title="Next task", desc="Attend scalar academy master class")
-    db.session.add(query1)
-    db.session.commit()
+    with app.app_context():
+        db.session.add(query1)
+        db.session.commit()
     return render_template('index.html')
 
 
