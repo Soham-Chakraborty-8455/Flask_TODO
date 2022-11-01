@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
@@ -19,13 +19,20 @@ with app.app_context():
     db.create_all()
     db.session.commit()
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def hello_world():
-    query1= Todo(title="Next task", desc="Attend scalar academy master class")
-    with app.app_context():
-        db.session.add(query1)
-        db.session.commit()
-    return render_template('index.html')
+    if request.method=='POST':
+        Title=request.form['title']
+        Desc=request.form['desc']
+        query1= Todo(title=Title, desc=Desc)
+        with app.app_context():
+            db.session.add(query1)
+            db.session.commit()
+            allTodos = Todo.query.all()
+        return render_template('index.html',allTodos=allTodos)
+    else:
+        return render_template('index.html')
+
 
 
 if __name__ == "__main__":

@@ -20,14 +20,14 @@
         <div class="mb-2">
             <h4>Add TODO</h4>
         </div>
-        <form>
+        <form action="/" method="POST">
             <div class="mb-3">
                 <label for="title" class="form-label">Task</label>
-                <input type="text" class="form-control" id="title" aria-describedby="emailHelp">
+                <input type="text" class="form-control" name="title" id="title" aria-describedby="emailHelp">
             </div>
             <div class="mb-3">
                 <label for="desc" class="form-label">Description</label>
-                <input type="text" class="form-control" id="desc" aria-describedby="emailHelp">
+                <input type="text" class="form-control" name="desc" id="desc" aria-describedby="emailHelp">
             </div>
             <button type="submit" class="btn btn-primary">Add</button>
         </form>
@@ -44,27 +44,21 @@
                     <th scope="col">#</th>
                     <th scope="col">Task</th>
                     <th scope="col">Description</th>
+                    <th scope="col">Time</th>
 
                 </tr>
             </thead>
             <tbody>
+                {% for todo in allTodos %}
                 <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
+
+                    <th scope="row">{{loop.index}}</th>
+                    <td>{{todo.title}}</td>
+                    <td>{{todo.desc}}</td>
+                    <td>{{todo.date_created}}</td>
 
                 </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td colspan="2">Larry the Bird</td>
-
-                </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>
